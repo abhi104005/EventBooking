@@ -30,6 +30,24 @@ Configured to run locally using Kubernetes
 
 Kubernetes manifests for pods and services
 
+**🔍 Continuous Integration & Code Quality**
+
+**SonarQube Integration**
+
+Static code analysis with SonarQube to ensure code quality
+
+Detects bugs, vulnerabilities, and code smells
+
+Automatically runs as part of GitHub Actions workflow
+
+**GitHub Actions**
+
+Automated workflow to build, test, and analyze the application
+
+Runs SonarQube analysis on each commit
+
+Ensures that all tests pass before deployment
+
 **🌟 Features**
 ✅ User Authentication (JWT)
 ✅ Secure API with validation
@@ -37,6 +55,8 @@ Kubernetes manifests for pods and services
 ✅ Search & Filter Events
 ✅ Dockerized setup
 ✅ Kubernetes support for local deployment
+✅ SonarQube Integration for Code Quality
+✅ CI/CD with GitHub Actions
 
 **🤝 Contributing**
 Feel free to submit a pull request or open an issue for suggestions!
