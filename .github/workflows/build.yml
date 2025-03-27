@@ -14,6 +14,17 @@ jobs:
     name: Backend - Build & Test
     runs-on: ubuntu-latest
 
+    services:
+      sonarqube:
+        image: sonarqube:lts
+        ports:
+          - 9000:9000
+        options: >-
+          --health-cmd="curl -f http://localhost:9000/api/system/status || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -27,10 +38,6 @@ jobs:
           node-version: 18
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json 
-
-      - name: Test SonarQube Connectivity
-        run: curl -u "squ_a5fd534eefa121eaa921619c729bbb60458641dd:" http://172.31.213.226:9000/api/system/status
-
         
       - name: Install Dependencies
         run: npm ci
