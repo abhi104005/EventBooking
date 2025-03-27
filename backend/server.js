@@ -12,6 +12,7 @@ const auth = require("./security/Auth")
 const swagger = require("./SwaggerConfig")
 require("dotenv").config();
 var app = express();
+module.exports = app;
 swagger(app);
 app.use(cors({
     origin: "http://localhost:3000",
@@ -20,11 +21,15 @@ app.use(cors({
 app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-sequelize.sync().then(() => console.log("Database tables created"));
+if (process.env.NODE_ENV !== "test") {
+    sequelize.sync().then(() => console.log("Database tables created"));
+}
 
-app.listen(8080, () => {
-    console.log("Server started")
-})
+if (process.env.NODE_ENV !== "test") {
+    app.listen(8080, () => {
+        console.log("Server started")
+    })
+}
 
 /**
  * @swagger
@@ -190,7 +195,7 @@ app.get("/booked-tickets/:uid", auth, async (req, res) => {
                 {
                     model: Event,
                     as: "event",
-                    attributes: ["id", "name", "date", "location", "description"], 
+                    attributes: ["id", "name", "date", "location", "description"],
                 }
             ]
         });
@@ -256,36 +261,36 @@ app.delete("/deleteEvent/:eid", async (req, res) => {
     }
 })
 
-app.put("/updatepro", auth, async(req,res)=>{
-    const { name ,email, password } = req.body;
+app.put("/updatepro", auth, async (req, res) => {
+    const { name, email, password } = req.body;
     const id = req.user.id;
-    const hashedpassword = await bcrypt.hash(password,12);
-    console.log({id, name, email, hashedpassword})
+    const hashedpassword = await bcrypt.hash(password, 12);
+    console.log({ id, name, email, hashedpassword })
     try {
         const profile = await User.findByPk(id);
-        profile.name= name;
-        profile.email= email;
+        profile.name = name;
+        profile.email = email;
         profile.password = hashedpassword;
         await profile.save();
-        res.status(201).json({message:"Profile Updated Successfully"})
+        res.status(201).json({ message: "Profile Updated Successfully" })
     } catch (error) {
-        res.status(500).json({message:"Internal server Error", error:error.message})
+        res.status(500).json({ message: "Internal server Error", error: error.message })
     }
-    
+
 })
 
-app.get("/user", auth, async ( req,res) => {
-    const uid  = req.user.id;
-    try{
+app.get("/user", auth, async (req, res) => {
+    const uid = req.user.id;
+    try {
         const user = await User.findByPk(uid);
         console.log(user);
         const dto = {
-            name:user.name,
-            email:user.email
+            name: user.name,
+            email: user.email
         }
-        res.send({dto:dto})
-    }catch(error){
-        res.status(500).json({error:"Internal Server Error"})
+        res.send({ dto: dto })
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" })
     }
-    
+
 });
