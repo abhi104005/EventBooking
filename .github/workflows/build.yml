@@ -29,7 +29,8 @@ jobs:
           cache-dependency-path: backend/package-lock.json 
 
       - name: Test SonarQube Connectivity
-        run: curl -v http://192.168.1.100:9000/api/system/status
+        run: curl -u squ_a5fd534eefa121eaa921619c729bbb60458641dd http://your-ip:9000/api/system/status
+
         
       - name: Install Dependencies
         run: npm ci
