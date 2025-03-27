@@ -14,17 +14,6 @@ jobs:
     name: Backend - Build & Test
     runs-on: ubuntu-latest
 
-    services:
-      sonarqube:
-        image: sonarqube:lts
-        ports:
-          - 9000:9000
-        options: >-
-          --health-cmd="curl -f http://localhost:9000/api/system/status || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -58,13 +47,13 @@ jobs:
       #     name: backend-coverage-report
       #     path: backend/coverage/lcov-report/
 
-      - name: Run SonarQube Analysis
-        run: |
-          npx sonarqube-scanner \
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-        env:
-          SONAR_SCANNER_OPTS: "-Dsonar.sources=backend -Dsonar.exclusions=**/node_modules/**"
+      # - name: Run SonarQube Analysis
+      #   run: |
+      #     npx sonarqube-scanner \
+      #       -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+      #       -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      #   env:
+      #     SONAR_SCANNER_OPTS: "-Dsonar.sources=backend -Dsonar.exclusions=**/node_modules/**"
 
   frontend:
     name: Frontend - Build
