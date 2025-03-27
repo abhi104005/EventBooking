@@ -1,0 +1,84 @@
+name: Buil Test Pipeline
+
+on:
+  push:
+    branches: 
+      - "**"  
+  pull_request:
+    branches: 
+      - "**"  
+  workflow_dispatch: 
+
+jobs:
+  backend:
+    name: Backend - Build & Test
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Generate Coverage Report
+        run: |
+          npm run test -- --coverage
+          ls -la coverage
+
+      - name: Upload Coverage Report as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-coverage-report
+          path: backend/coverage/lcov-report/
+
+      - name: Run SonarQube Analysis
+        run: |
+          npx sonarqube-scanner \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_SCANNER_OPTS: "-Dsonar.sources=backend -Dsonar.exclusions=**/node_modules/**"
+
+  frontend:
+    name: Frontend - Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Frontend
+        run: npm run build
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: frontend/build/
