@@ -14,10 +14,6 @@ jobs:
     name: Backend - Build & Test
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: backend
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
