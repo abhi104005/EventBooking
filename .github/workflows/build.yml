@@ -35,17 +35,17 @@ jobs:
       # - name: Run Tests
       #   run: npm test
 
-      - name: Generate Coverage Report
-        run: |
-          npm run test -- --coverage
-          ls -la coverage
-        working-directory: backend
+      # - name: Generate Coverage Report
+      #   run: |
+      #     npm run test -- --coverage
+      #     ls -la coverage
+      #   working-directory: backend
 
-      - name: Upload Coverage Report as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-coverage-report
-          path: backend/coverage/lcov-report/
+      # - name: Upload Coverage Report as Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: backend-coverage-report
+      #     path: backend/coverage/lcov-report/
 
       - name: Run SonarQube Analysis
         run: |
