@@ -46,6 +46,8 @@ jobs:
       
       - name: Create Test Database (If Not Created)
         run: mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS demotest;"
+        
+      - name: Create Test Database (If Not Created)
         run: mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS demo;"
 
       - name: Run Tests
