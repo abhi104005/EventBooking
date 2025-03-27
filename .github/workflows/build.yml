@@ -19,7 +19,7 @@ jobs:
         image: mysql:8
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testdb
+          MYSQL_DATABASE: demotest
           MYSQL_USER: testuser
           MYSQL_PASSWORD: testpass
         ports:
