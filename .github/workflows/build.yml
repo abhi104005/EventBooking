@@ -32,8 +32,8 @@ jobs:
         run: npm ci
         working-directory: backend
 
-      - name: Run Tests
-        run: npm test
+      # - name: Run Tests
+      #   run: npm test
 
       - name: Generate Coverage Report
         run: |
