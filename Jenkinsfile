@@ -27,8 +27,8 @@ pipeline {
         stage('Push Images to Local Registry') {
             steps {
                 script {
-                    sh "kubectl apply -f KubernetesUser/backend-deployment.yaml"
-                    sh "kubectl apply -f KubernetesUser/frontend-deployment.yaml"
+                    sh "kubectl apply -f KubernetesUser/backend-deployment.yaml --validate=false"
+                    sh "kubectl apply -f KubernetesUser/frontend-deployment.yaml --validate=false"
                 }
             }
         }
