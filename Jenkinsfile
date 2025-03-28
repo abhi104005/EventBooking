@@ -27,8 +27,8 @@ pipeline {
         stage('Push Images to Local Registry') {
             steps {
                 script {
-                    sh "docker push $DOCKER_REGISTRY/$BACKEND_IMAGE"
-                    sh "docker push $DOCKER_REGISTRY/$FRONTEND_IMAGE"
+                    sh "kubectl apply -f KubernetesUser/backend-deployment.yaml"
+                    sh "kubectl apply -f KubernetesUser/frontend-deployment.yaml"
                 }
             }
         }
