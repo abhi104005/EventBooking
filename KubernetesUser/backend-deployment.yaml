@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: localhost:5000/self-backend  
+          image: localhost:5000/eventbookingsystem-backend 
           ports:
             - containerPort: 8080
           env:

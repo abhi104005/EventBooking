@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: localhost:5000/self-frontend  
+          image: localhost:5000/eventbookingsystem-frontend  
           ports:
             - containerPort: 3000
 ---
