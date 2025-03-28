@@ -5,6 +5,7 @@ pipeline {
         DOCKER_REGISTRY = "localhost:5000"
         BACKEND_IMAGE = "eventbookingsystem-backend"
         FRONTEND_IMAGE = "eventbookingsystem-frontend"
+        KUBECONFIG = "/root/.kube/config"
     }
 
     stages {
@@ -36,6 +37,8 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
+                    sh 'echo "Using KUBECONFIG=$KUBECONFIG"'
+                    sh 'kubectl config current-context'
                     sh "kubectl apply -f k8s/backend-deployment.yaml"
                     sh "kubectl apply -f k8s/frontend-deployment.yaml"
                 }
