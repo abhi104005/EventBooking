@@ -5,7 +5,7 @@ pipeline {
         DOCKER_REGISTRY = "localhost:5000"
         BACKEND_IMAGE = "eventbookingsystem-backend"
         FRONTEND_IMAGE = "eventbookingsystem-frontend"
-        KUBECONFIG = "/root/.kube/config"
+        KUBECONFIG = "/home/jenkins/.kube/config"
     }
 
     stages {
