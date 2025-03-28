@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY = "localhost:5000"
-        BACKEND_IMAGE = "localhost:5000/eventbookingsystem-backend"
-        FRONTEND_IMAGE = "localhost:5000/eventbookingsystem-frontend"
+        BACKEND_IMAGE = "eventbookingsystem-backend"
+        FRONTEND_IMAGE = "eventbookingsystem-frontend"
     }
 
     stages {
