@@ -5,7 +5,7 @@ pipeline {
         DOCKER_REGISTRY = "localhost:5000"
         BACKEND_IMAGE = "eventbookingsystem-backend"
         FRONTEND_IMAGE = "eventbookingsystem-frontend"
-        KUBECONFIG = "/home/jenkins/.kube/config"
+        KUBECONFIG = "/home/jenkins/.kube/config"   
     }
 
     stages {
@@ -30,11 +30,11 @@ pipeline {
                 script {
                     sh "docker info"
                     
-                    sh "docker tag $DOCKER_REGISTRY/$BACKEND_IMAGE:latest $DOCKER_REGISTRY/$BACKEND_IMAGE:latest"
-                    sh "docker push $DOCKER_REGISTRY/$BACKEND_IMAGE:latest"
+                    sh "docker tag $DOCKER_REGISTRY/$BACKEND_IMAGE $DOCKER_REGISTRY/$BACKEND_IMAGE"
+                    sh "docker push $DOCKER_REGISTRY/$BACKEND_IMAGE"
 
-                    sh "docker tag $DOCKER_REGISTRY/$FRONTEND_IMAGE:latest $DOCKER_REGISTRY/$FRONTEND_IMAGE:latest"
-                    sh "docker push $DOCKER_REGISTRY/$FRONTEND_IMAGE:latest"
+                    sh "docker tag $DOCKER_REGISTRY/$FRONTEND_IMAGE $DOCKER_REGISTRY/$FRONTEND_IMAGE"
+                    sh "docker push $DOCKER_REGISTRY/$FRONTEND_IMAGE"
                 }
             }
         }
@@ -42,8 +42,8 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh "kubectl apply -f k8s/backend-deployment.yaml"
-                    sh "kubectl apply -f k8s/frontend-deployment.yaml"
+                    sh "kubectl apply -f KubernetesUser/backend-deployment.yaml"
+                    sh "kubectl apply -f KubernetesUser/frontend-deployment.yaml"
                 }
             }
         }
