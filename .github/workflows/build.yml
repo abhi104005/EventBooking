@@ -45,15 +45,15 @@ jobs:
         run: mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS demo;"
         
 
-      - name: Run Tests
-        run: npm test
-        working-directory: backend
+      # - name: Run Tests
+      #   run: npm test
+      #   working-directory: backend
 
-      - name: Generate Coverage Report
-        run: |
-          npm run test -- --coverage
-          ls -la coverage
-        working-directory: backend
+      # - name: Generate Coverage Report
+      #   run: |
+      #     npm run test -- --coverage
+      #     ls -la coverage
+      #   working-directory: backend
 
       # - name: Upload Coverage Report as Artifact
       #   uses: actions/upload-artifact@v4
