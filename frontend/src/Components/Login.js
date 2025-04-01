@@ -31,11 +31,20 @@ export function Login() {
             const data = await response.json();
             if (response.ok) {
                 const decoded = jwtDecode(data.token);
-
+                if(data.status === "pending" ){
+                    setMessage("Your Request has not been Accepted!, plz contact yout IT Department!")
+                    return 
+                }else if(data.status === "rejected" ){
+                    setMessage("You Have been Blocked!, Contact IT department for Help!")
+                    return 
+                }
                 setMessage("Login Successful");
                 if (decoded.role === "admin") {
                     localStorage.setItem("token", data.token);
                     return navigate("/adminHome");
+                }else if(decoded.role === "superadmin"){
+                    localStorage.setItem("token", data.token);
+                    return navigate("/sadmin");
                 }
                 setMessage("Login Successful");
                 localStorage.setItem("token", data.token);

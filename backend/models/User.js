@@ -16,7 +16,11 @@ const User = sequelize.define("User", {
         allowNull: false
     },
     role: {
-        type: DataTypes.ENUM('admin', 'user'),
+        type: DataTypes.ENUM('admin', 'user', 'superadmin'),
+        allowNull: false
+    },
+    cur_status: {
+        type: DataTypes.ENUM('pending', 'rejected', 'accepted'),
         allowNull: false
     }
 }, {

@@ -16,6 +16,32 @@ export function Register() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handleCheck = async () => {
+        if (!formData.email) return false; 
+        try {
+            const response = await fetch("http://localhost:8080/email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: formData.email })
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+                if (data.value) {
+                    alert("Email is already taken! Please use another email.");
+                    setFormData({ ...formData, email: "" });
+                }
+            } else {
+                alert(`Error: ${data.error}`);
+                return false;
+            }
+        } catch (error) {
+            alert("Network Error");
+            return false;
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -64,6 +90,7 @@ export function Register() {
                             placeholder="example@google.com"
                             value={formData.email}
                             onChange={handleChange}
+                            onBlur={handleCheck}
                             required
                         />
                     </div>

@@ -10,6 +10,7 @@ const Event = require("./models/Event");
 const Booking = require("./models/Booking");
 const auth = require("./security/Auth")
 const swagger = require("./SwaggerConfig")
+const { sendMessage } = require("./RabbitMQ/Producer")
 require("dotenv").config();
 var app = express();
 module.exports = app;
@@ -88,7 +89,7 @@ app.post("/addevent", auth, async (req, res) => {
 
 })
 
-app.post("/register", async (req, res) => {
+app.post("/registers", async (req, res) => {
     const { name, email, password, role } = req.body;
 
     const hashedpassword = await bcrypt.hash(password, 12);
@@ -125,16 +126,15 @@ app.post("/login", async (req, res) => {
         if (!check) {
             return res.status(401).json({ error: "Invalid Username and Password" });
         }
-
         const token = jwt.sign({ id: user.id, role: user.role, name: user.name }, "Node", { expiresIn: "10m" });
+            
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: false,
+        //     sameSite: "lax"
+        // });
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: "lax"
-        });
-
-        res.status(200).json({ message: "User logged in successfully", token });
+        res.status(200).json({ message: "User logged in successfully", token, status:user.cur_status});
 
     } catch (error) {
         console.error("Login error:", error);
@@ -294,3 +294,74 @@ app.get("/user", auth, async (req, res) => {
     }
 
 });
+
+app.post("/register", async (req, res) => {
+    const { name, email, password, role } = req.body;
+    const hashedpassword = await bcrypt.hash(password, 12);
+    const dto = {
+        action: "register",
+        Data: {
+            name,
+            email,
+            password: hashedpassword,
+            role
+        }
+    }
+    try {
+        await sendMessage(dto);
+        res.status(201).json({ message: "User registered successfully" });
+    } catch (error) {
+        res.status(500).json({ error: "Error registering user ", details: error.message });
+    }
+})
+
+app.get("/getreq",async (req,res)=>{
+    try {
+        const users = await User.findAll({
+            where: { cur_status: "pending" },
+            attributes: { exclude: ["password"] }
+        });
+        res.status(200).json({message:"Data Fetch Successfully",data:users});
+    } catch (error) {
+        res.status(500).json({message:"Internal Server Error",err:error})
+    }
+})
+
+app.put("/acceptreq",async (req,res)=>{
+    const { uid , status }= req.body;
+    console.log(uid , status)
+    try {
+        const user = await User.findByPk(uid);
+        
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        user.cur_status = status;
+        await user.save(); 
+
+        return res.status(200).json({ msg: "${status} The User" });
+
+    }  catch (error) {
+        res.status(500).json({msg:"Interna Server Error"});
+    }
+})
+
+app.post("/email", async (req,res)=>{
+    const { email } = req.body;
+    try {
+        const emails = await User.findAll({
+            where:{
+                email:email
+            }
+        })
+        if(emails.length>0){
+            res.status(200).json({msg:"Email is Already Registred" , value:true });
+        }else{
+            res.status(200).json({msg:"Email is Available"});
+        }
+    } catch (error) {
+        console.log("error")
+    }
+})
+

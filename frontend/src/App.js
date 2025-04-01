@@ -14,15 +14,22 @@ import { ModifyEvent } from './Components/ModifyEvent';
 import { ProtectedRoute } from './Components/RoutesProtector';
 import { UpdateProfile } from './Components/UpdateProfile';
 import { LandingPage } from './Components/HomePage';
+import { SuperAdminHome } from './Components/SuperAdmin';
+import { RegistrationRequest } from './Components/RegistrationRequest';
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<LandingPage />} />  
+        <Route path="/" element={<LandingPage />} />
         <Route path="/registerform" element={<Register />} />
         <Route path="/book" element={<EventList />} />
-        <Route path="/login" element={<Login />} />   
+        <Route path="/login" element={<Login />} />
+
+        <Route element={<ProtectedRoute allowedRoles={["superadmin"]} />}>
+          <Route path="/sadmin" element={<SuperAdminHome />} />
+          <Route path="/regreq" element={<RegistrationRequest />} />
+        </Route>
 
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="/adminhome" element={<AdminHome />} />
@@ -36,16 +43,16 @@ function App() {
           <Route path="/book-event/:eventId" element={<BookEvent />} />
           <Route path="/booked-tickets" element={<BookedTickets />} />
           <Route path="/home" element={<HomePage />} />
-          
+
         </Route>
 
-        <Route element={<ProtectedRoute allowedRoles={["admin","user"]} />}>
+        <Route element={<ProtectedRoute allowedRoles={["admin", "user"]} />}>
           <Route path="/update" element={<UpdateProfile />} />
-      </Route>
+        </Route>
 
       </Routes>
 
-      
+
     </div>
   );
 }
