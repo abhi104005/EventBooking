@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 export function RegistrationRequest() {
 
     const [users, setUsers] = useState([]);
-    const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const isLoggedIn = !!token;
@@ -61,8 +60,7 @@ export function RegistrationRequest() {
         const token = localStorage.getItem("token");
         if (token) {
             try {
-                const decoded = jwtDecode(token);
-                setUser(decoded);
+                jwtDecode(token);
             } catch (error) {
                 console.error("Invalid token");
                 localStorage.removeItem("token");
@@ -82,7 +80,7 @@ export function RegistrationRequest() {
         }).then(data => data.json())
             .then(result => { setUsers(result.data); })
 
-    }, [navigate])
+    }, [token,navigate])
 
     return (<div>
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
