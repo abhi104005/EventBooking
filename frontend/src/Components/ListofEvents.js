@@ -31,6 +31,7 @@ export function EventList() {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
+                "apikey": 'f589a6959f3e04037eb2b3eb0ff726ac',
                 "Content-Type": "application/json",
             }
         })

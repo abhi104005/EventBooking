@@ -35,6 +35,9 @@ const Event = sequelize.define("Event", {
             model: User,
             key: "id"
         }
+    },cur_status: {
+        type:DataTypes.ENUM("Completed", "Upcoming","Cancelled", "pending"),
+        allowNull:false
     }
 }, {
     timestamps: false

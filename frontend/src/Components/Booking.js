@@ -38,6 +38,7 @@ export function BookEvent() {
         fetch(`http://localhost:8080/events/${eventId}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
+                "apikey": 'f589a6959f3e04037eb2b3eb0ff726ac',
             }
         })
             .then((response) => {
@@ -59,6 +60,7 @@ export function BookEvent() {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
+                "apikey": 'f589a6959f3e04037eb2b3eb0ff726ac',
             },
             body: JSON.stringify({
                 user_id: user.id,

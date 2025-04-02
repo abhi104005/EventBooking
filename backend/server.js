@@ -79,8 +79,10 @@ app.post("/addevent", auth, async (req, res) => {
             location,
             description,
             available_seats,
-            admin_id
+            admin_id,
+            cur_status: "pending"
         });
+        console.log(newEvent)
         res.status(201).json({ message: "Event created successfully!", event: newEvent });
     } catch (error) {
         console.error("Error creating event:", error);
@@ -144,7 +146,11 @@ app.post("/login", async (req, res) => {
 
 app.get("/events", async (req, res) => {
     try {
-        const events = await Event.findAll();
+        const events = await Event.findAll({
+            where:{
+                cur_status:"Upcoming"
+            }
+        });
         res.json(events);
     } catch (error) {
         console.error("Error fetching events:", error);

@@ -62,6 +62,7 @@ export function CreateEvent() {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
+                    "apikey": 'f589a6959f3e04037eb2b3eb0ff726ac',
                 },
                 body: JSON.stringify(newEvent),
             });

@@ -25,6 +25,7 @@ export function ModifyEvent() {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
+                "apikey": 'f589a6959f3e04037eb2b3eb0ff726ac',
                 "Content-Type": "application/json",
             }
         })
@@ -62,6 +63,7 @@ export function ModifyEvent() {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "apikey": 'f589a6959f3e04037eb2b3eb0ff726ac',
             },
             body: JSON.stringify(eventData),
         })
@@ -77,7 +79,10 @@ export function ModifyEvent() {
         e.preventDefault();
         fetch("http://localhost:8080/deleteEvent/" + eventId, {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" }
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": 'f589a6959f3e04037eb2b3eb0ff726ac',
+            }
         })
             .then(response => response.json())
             .then((data) => {
